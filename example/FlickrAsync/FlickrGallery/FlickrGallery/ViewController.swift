@@ -42,7 +42,7 @@ class ViewController: UIViewController, UISearchBarDelegate {
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        let destinationViewController:GalleryViewController = segue.destinationViewController as GalleryViewController
+        let destinationViewController:GalleryViewController = segue.destinationViewController as! GalleryViewController
         
         if !searchBar.text.isEmpty{
             destinationViewController.searchTerm = searchBar.text
