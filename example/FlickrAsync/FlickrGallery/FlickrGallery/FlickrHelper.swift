@@ -57,33 +57,33 @@ class FlickrHelper: NSObject {
                     completion(searchString: searchStr, flickrPhotos: nil, error: error)
                 }else{
                 
-                    let status:String! = resultDict.objectForKey("stat") as! String
+                    let status:String! = resultDict.objectForKey("stat") as String
                     
                     if status == "fail"{
                         
-                        let messageString:String = resultDict.objectForKey("message") as! String
+                        let messageString:String = resultDict.objectForKey("message") as String
                         let error:NSError? = NSError(domain: "FlickrSearch", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:messageString])
                         
                         
                         completion(searchString: searchStr, flickrPhotos: nil, error:error )
                     }else{
                         // Show structure of result
-                        let photosDict:NSDictionary = resultDict.objectForKey("photos") as! NSDictionary
-                        let resultArray:NSArray = photosDict.objectForKey("photo") as! NSArray
+                        let photosDict:NSDictionary = resultDict.objectForKey("photos") as NSDictionary
+                        let resultArray:NSArray = photosDict.objectForKey("photo") as NSArray
                         
                         let flickrPhotos:NSMutableArray = NSMutableArray()
                         
                         for photoObject in resultArray{
-                            let photoDict:NSDictionary = photoObject as! NSDictionary
-                            print(photoDict)
+                            let photoDict:NSDictionary = photoObject as NSDictionary
+                            println(photoDict)
                             var flickrPhoto:FlickrPhoto = FlickrPhoto()
-                            flickrPhoto.farm = photoDict.objectForKey("farm") as! Int
-                            print("FARM \(flickrPhoto.farm)")
+                            flickrPhoto.farm = photoDict.objectForKey("farm") as Int
+                            println("FARM \(flickrPhoto.farm)")
                             
-                            flickrPhoto.server = photoDict.objectForKey("server") as! String
+                            flickrPhoto.server = photoDict.objectForKey("server") as String
                             
-                            flickrPhoto.secret = photoDict.objectForKey("secret") as! String
-                            flickrPhoto.photoID = photoDict.objectForKey("id") as! String
+                            flickrPhoto.secret = photoDict.objectForKey("secret") as String
+                            flickrPhoto.photoID = photoDict.objectForKey("id") as String
 
                             let searchURL:NSString = FlickrHelper.URLForFlickrPhoto(flickrPhoto, size: "m")
                             

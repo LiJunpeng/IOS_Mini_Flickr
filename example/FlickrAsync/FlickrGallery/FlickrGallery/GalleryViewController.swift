@@ -50,7 +50,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     }
     
     func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
-        let cell:FlickCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("FlickrCell", forIndexPath: indexPath) as! FlickCollectionViewCell
+        let cell:FlickCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("FlickrCell", forIndexPath: indexPath) as FlickCollectionViewCell
         
         cell.image = nil
         
@@ -59,7 +59,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         dispatch_async(queue, { () -> Void in
             var error:NSError?
             
-            let searchURL:String = self.flickrResults.objectAtIndex(indexPath.item) as! String
+            let searchURL:String = self.flickrResults.objectAtIndex(indexPath.item) as String
             let imageData:NSData = NSData(contentsOfURL: NSURL(string: searchURL), options: nil, error: &error)
             
             if error == nil{
@@ -84,7 +84,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     func scrollViewDidScroll(scrollView: UIScrollView!) {
         
         for view in collectionView.visibleCells(){
-            let view:FlickCollectionViewCell = view as! FlickCollectionViewCell
+            var view:FlickCollectionViewCell = view as FlickCollectionViewCell
             let yOffset:CGFloat = ((collectionView.contentOffset.y - view.frame.origin.y) / 200) * 25
             
             view.setImageOffset(CGPointMake(0, yOffset))

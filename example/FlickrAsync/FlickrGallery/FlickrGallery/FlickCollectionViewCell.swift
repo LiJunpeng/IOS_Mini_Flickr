@@ -37,8 +37,8 @@ class FlickCollectionViewCell: UICollectionViewCell {
         setupImageView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
         setupImageView()
     }
     
