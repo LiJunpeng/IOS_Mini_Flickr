@@ -33,11 +33,9 @@
 //    printf("farm %s ", [[FlickrHelper URLForFlickrPhoto:f size:@"m"] UTF8String]);
 //============================
     FlickrHelper *helper = [[FlickrHelper alloc] init];
-    printf("url: %s", [[helper searchFlickrForString:@"a" completion:(void [[(^)(NSString* searchString, NSMutableArray *flickrPhotos, NSError* error) ]] UTF8String]);
+    [helper searchFlickrForString:@"cat" completion:^(NSString* searchString, NSMutableArray *flickrPhotos, NSError* error){}];
     
 //============================
-    
-    
     
 }
 

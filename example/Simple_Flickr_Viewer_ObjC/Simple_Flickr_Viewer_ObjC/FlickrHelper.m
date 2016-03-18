@@ -72,13 +72,24 @@
         //NSString(contentsOfURL: Location, encoding: NSUTF8StringEncoding, error: &error)
         
         //let searchResultString:String! = String.stringWithContentsOfURL(NSURL.URLWithString(searchURL), encoding: NSUTF8StringEncoding, error: &error)
+        //let searchURL:String = FlickrHelper.URLForSearchString(searchStr)
         
-        NSURL *url = [[NSURL alloc] initWithString:searchStr];
+        NSString *searchURL = [FlickrHelper URLForSearchString:searchStr];
+        
+        NSURL *url = [[NSURL alloc] initWithString:searchURL];
         NSString *my_string = [[NSString alloc] initWithContentsOfURL:url
                                                              encoding:NSUTF8StringEncoding
                                                                 error:&error];
-        printf("asdfafd: %s", [my_string UTF8String]);
+        //printf("asdfafd: %s", [my_string UTF8String]);
        // NSString *searchResultString =
+        
+        if (error != nil){
+            //completion(searchString: searchStr, flickrPhotos: nil, error: error)
+            [completion searchString: searchStr flickrPhotos: nil error: error];
+        }else{
+        
+        
+        }
         
     });
 }
