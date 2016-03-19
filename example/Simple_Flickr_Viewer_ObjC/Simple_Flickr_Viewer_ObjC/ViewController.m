@@ -12,6 +12,14 @@
 
 @interface ViewController ()
 
+@property (weak, nonatomic) IBOutlet UITextField *search_bar;
+
+@property (weak, nonatomic) IBOutlet UIButton *search_button;
+
+@property (weak, nonatomic) IBOutlet UIImageView *flickr_image_view;
+
+
+
 @end
 
 @implementation ViewController
@@ -35,7 +43,28 @@
     FlickrHelper *helper = [[FlickrHelper alloc] init];
     [helper searchFlickrForString:@"cat" completion:^(NSString* searchString, NSMutableArray *flickrPhotos, NSError* error){
         
-        //flickrPhotos[0].farm;
+        if (!error)
+        {
+            FlickrPhoto *photo = flickrPhotos[0];
+            UIImage *image = photo.thumbnail;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _flickr_image_view.image = image;
+            });
+            
+            
+//            let flickrPhoto:FlickrPhoto = flickrPhotos.objectAtIndex(Int(arc4random_uniform(UInt32(flickrPhotos.count)))) as FlickrPhoto
+//            
+//            let image:UIImage = flickrPhoto.thumbnail
+//            
+//            dispatch_async(dispatch_get_main_queue(), {
+//                self.flickrImageView.image = image
+//                self.activity.stopAnimating()
+//                self.flickrIconImageView.backgroundColor = UIColor.clearColor()
+            
+//            })
+            
+        }
     
     }];
     
