@@ -77,18 +77,89 @@
         NSString *searchURL = [FlickrHelper URLForSearchString:searchStr];
         
         NSURL *url = [[NSURL alloc] initWithString:searchURL];
-        NSString *my_string = [[NSString alloc] initWithContentsOfURL:url
+        NSString *searchResultString = [[NSString alloc] initWithContentsOfURL:url
                                                              encoding:NSUTF8StringEncoding
                                                                 error:&error];
-        //printf("asdfafd: %s", [my_string UTF8String]);
-       // NSString *searchResultString =
+        //printf("asdfafd: %s", [searchResultString UTF8String]);
+        // NSString *searchResultString =
         
         if (error != nil){
             //completion(searchString: searchStr, flickrPhotos: nil, error: error)
-            [completion searchString: searchStr flickrPhotos: nil error: error];
-        }else{
+            //[completion searchString: searchStr flickrPhotos: nil error: error];
+            printf("fff, no search result");
+        }
+        else
+        {
+            // Parse JSON Response
+            
+            NSData *jsonData = [searchResultString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:false];
+            
+            NSDictionary *resultDict = [NSJSONSerialization JSONObjectWithData:jsonData options:nil error:&error];
         
-        
+            //printf("%s", resultDict);
+//            let resultDict:NSDictionary! = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: &error) as NSDictionary
+            if(error != nil)
+            {
+                printf("fff, json conversion fail");
+            }
+            else{
+                //let status:String = resultDict.objectForKey("stat") as! String
+                NSString *status = [resultDict objectForKey:@"stat"];
+                
+                if ([status isEqual: @"fail"]){
+                    //let error:NSError? = NSError(domain: "FlickrSearch", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:resultDict.objectForKey("message")])
+                    //completion(searchString: searchStr, flickrPhotos: nil, error: error)
+                    printf("get json fail");
+                }
+                else
+                {
+//                    let resultArray:NSArray = resultDict.objectForKey("photos").objectForKey("photo") as! NSArray
+//                    
+//                    let flickrPhotos:NSMutableArray = NSMutableArray()
+                    NSArray *resultArray = [[resultDict objectForKey:@"photos"] objectForKey:@"photo"];
+                    
+                    NSMutableArray *flickrPhotos;
+                    
+                    for (NSDictionary *photoObject in resultArray)
+                    {
+                        NSDictionary *photoDict = photoObject;
+                        //printf("idididid: %s", [[photoDict objectForKey:@"id"] UTF8String]);
+                        //printf("farm: %d\n", [photoDict[@"farm"] intValue]);
+                        
+                        FlickrPhoto *flickrPhoto = [[FlickrPhoto alloc] initWithID:photoObject[@"id"]
+                                                                                secret:photoObject[@"secret"]
+                                                                                server:photoObject[@"server"]
+                                                                                  farm:[photoObject[@"farm"] intValue]
+                                                                                 ];
+                        
+                        printf("id: %s, server: %s, secret: %s, farm: %d. \n",[flickrPhoto.photoID UTF8String], [flickrPhoto.server UTF8String], [flickrPhoto.secret UTF8String], flickrPhoto.farm);
+                        
+                        NSString *searchURL = [FlickrHelper URLForFlickrPhoto:flickrPhoto size:@"m"];
+                        NSData *imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString:searchURL]
+                                                                  options:nil
+                                                                    error:&error];
+                    
+                        
+                        //[NSURL URLWithString:searchURL]
+                        
+                        
+                        UIImage *image = [UIImage imageWithData:imageData];
+                        flickrPhoto.thumbnail = image;
+                        
+                        [flickrPhotos addObject:flickrPhoto];
+
+//                        let imageData:NSData = NSData(contentsOfURL:NSURL.URLWithString(searchURL), options: nil, error: &error)
+//                        
+//                        let image:UIImage = UIImage(data: imageData)
+//                        
+//                        flickrPhoto.thumbnail = image
+//                        
+//                        flickrPhotos.addObject(flickrPhoto)
+                        
+                    }
+                    
+                }
+            }
         }
         
     });

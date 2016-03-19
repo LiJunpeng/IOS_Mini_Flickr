@@ -20,6 +20,8 @@
 @property (nonatomic, strong) UIImage *thumbnail;
 @property (nonatomic, strong) UIImage *largeImage;
 
+- (instancetype)initWithID:(NSString*)ID secret:(NSString*)secret server:(NSString*)server farm:(int)farm;
+
 @end
 
 
