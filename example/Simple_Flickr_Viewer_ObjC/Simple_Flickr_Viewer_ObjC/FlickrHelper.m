@@ -87,6 +87,7 @@
             //completion(searchString: searchStr, flickrPhotos: nil, error: error)
             //[completion searchString: searchStr flickrPhotos: nil error: error];
             printf("fff, no search result");
+            completion(searchStr,nil,error);
         }
         else
         {
@@ -101,6 +102,7 @@
             if(error != nil)
             {
                 printf("fff, json conversion fail");
+                completion(searchStr,nil,error);
             }
             else{
                 //let status:String = resultDict.objectForKey("stat") as! String
@@ -110,54 +112,36 @@
                     //let error:NSError? = NSError(domain: "FlickrSearch", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey:resultDict.objectForKey("message")])
                     //completion(searchString: searchStr, flickrPhotos: nil, error: error)
                     printf("get json fail");
+                    completion(searchStr,nil,error);
                 }
                 else
                 {
-//                    let resultArray:NSArray = resultDict.objectForKey("photos").objectForKey("photo") as! NSArray
-//                    
-//                    let flickrPhotos:NSMutableArray = NSMutableArray()
                     NSArray *resultArray = [[resultDict objectForKey:@"photos"] objectForKey:@"photo"];
                     
-                    NSMutableArray *flickrPhotos;
+                    NSMutableArray *flickrPhotos = [[NSMutableArray alloc] init];
                     
                     for (NSDictionary *photoObject in resultArray)
                     {
                         NSDictionary *photoDict = photoObject;
-                        //printf("idididid: %s", [[photoDict objectForKey:@"id"] UTF8String]);
-                        //printf("farm: %d\n", [photoDict[@"farm"] intValue]);
                         
-                        FlickrPhoto *flickrPhoto = [[FlickrPhoto alloc] initWithID:photoObject[@"id"]
-                                                                                secret:photoObject[@"secret"]
-                                                                                server:photoObject[@"server"]
-                                                                                  farm:[photoObject[@"farm"] intValue]
+                        FlickrPhoto *flickrPhoto = [[FlickrPhoto alloc] initWithID:photoDict[@"id"]
+                                                                                secret:photoDict[@"secret"]
+                                                                                server:photoDict[@"server"]
+                                                                                  farm:[photoDict[@"farm"] intValue]
                                                                                  ];
                         
                         printf("id: %s, server: %s, secret: %s, farm: %d. \n",[flickrPhoto.photoID UTF8String], [flickrPhoto.server UTF8String], [flickrPhoto.secret UTF8String], flickrPhoto.farm);
                         
                         NSString *searchURL = [FlickrHelper URLForFlickrPhoto:flickrPhoto size:@"m"];
-                        NSData *imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString:searchURL]
-                                                                  options:nil
-                                                                    error:&error];
-                    
-                        
-                        //[NSURL URLWithString:searchURL]
-                        
+                        NSData *imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString:searchURL] options:nil error:&error];
                         
                         UIImage *image = [UIImage imageWithData:imageData];
                         flickrPhoto.thumbnail = image;
                         
                         [flickrPhotos addObject:flickrPhoto];
-
-//                        let imageData:NSData = NSData(contentsOfURL:NSURL.URLWithString(searchURL), options: nil, error: &error)
-//                        
-//                        let image:UIImage = UIImage(data: imageData)
-//                        
-//                        flickrPhoto.thumbnail = image
-//                        
-//                        flickrPhotos.addObject(flickrPhoto)
-                        
                     }
-                    
+                    //completion(searchString: searchStr, flickrPhotos: flickrPhotos, error: nil)
+                    completion(searchStr,flickrPhotos,nil);
                 }
             }
         }

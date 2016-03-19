@@ -508,6 +508,7 @@
 				BFD266D71C9B2FC000A26BA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BFD266D81C9B2FC000A26BA4 /* Build configuration list for PBXNativeTarget "Simple_Flickr_Viewer_ObjCTests" */ = {
 			isa = XCConfigurationList;
@@ -516,6 +517,7 @@
 				BFD266DA1C9B2FC000A26BA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BFD266DB1C9B2FC000A26BA4 /* Build configuration list for PBXNativeTarget "Simple_Flickr_Viewer_ObjCUITests" */ = {
 			isa = XCConfigurationList;
@@ -524,6 +526,7 @@
 				BFD266DD1C9B2FC000A26BA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
