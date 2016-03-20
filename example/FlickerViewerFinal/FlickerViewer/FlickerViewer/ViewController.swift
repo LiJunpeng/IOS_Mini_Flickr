@@ -30,16 +30,16 @@ class ViewController: UIViewController {
         
         let flickr:FlickrHelper = FlickrHelper()
         
-        if searchTextField.text.isEmpty {
+        if searchTextField.text!.isEmpty {
             let alert:UIAlertController = UIAlertController(title: "Ooops", message: "Please enter a search term", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             
         }else{
-            flickr.searchFlickrForString(searchTextField.text, completion: { (searchString:String!, flickrPhotos:NSMutableArray!, error:NSError!) -> () in
+            flickr.searchFlickrForString(searchTextField.text!, completion: { (searchString:String!, flickrPhotos:NSMutableArray!, error:NSError!) -> () in
                 
-                if !error{
+                if (error == nil){
                 
-                    let flickrPhoto:FlickrPhoto = flickrPhotos.objectAtIndex(Int(arc4random_uniform(UInt32(flickrPhotos.count)))) as FlickrPhoto
+                    let flickrPhoto:FlickrPhoto = flickrPhotos.objectAtIndex(Int(arc4random_uniform(UInt32(flickrPhotos.count)))) as! FlickrPhoto
                     
                     let image:UIImage = flickrPhoto.thumbnail
                     

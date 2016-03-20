@@ -12,7 +12,7 @@ class FlickrHelper: NSObject {
     
     class func URLForSearchString (searchString:String) -> String{
         let apiKey:String = "FILL IN YOUR API KEY HERE"
-        let search:String = searchString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        let search:String = searchString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
         
         return "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(apiKey)&text=\(search)&per_page=20&format=json&nojsoncallback=1"
         
@@ -38,7 +38,7 @@ class FlickrHelper: NSObject {
             
             var error:NSError?
             
-            let searchResultString:String! = String.stringWithContentsOfURL(NSURL.URLWithString(searchURL), encoding: NSUTF8StringEncoding, error: &error)
+            let searchResultString:String! = String.init(contentsOfURL: NSURL.URLWithString(searchURL), encoding: NSUTF8StringEncoding)
             
             if error != nil{
                 completion(searchString: searchStr, flickrPhotos: nil, error: error)
@@ -47,7 +47,7 @@ class FlickrHelper: NSObject {
                 
                 let jsonData:NSData! = searchResultString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
                 
-                let resultDict:NSDictionary! = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: &error) as NSDictionary
+                let resultDict:NSDictionary! =  try NSJSONSerialization.JSONObjectWithData(jsonData, options: nil) as NSDictionary
                 
                 if error != nil{
                     completion(searchString: searchStr, flickrPhotos: nil, error: error)
